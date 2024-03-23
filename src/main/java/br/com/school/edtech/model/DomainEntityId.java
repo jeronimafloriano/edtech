@@ -1,5 +1,6 @@
 package br.com.school.edtech.model;
 
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.UUID;
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @MappedSuperclass
 public abstract class DomainEntityId implements Serializable {
 
+  @EmbeddedId
   private final UUID id;
 
   protected DomainEntityId() {

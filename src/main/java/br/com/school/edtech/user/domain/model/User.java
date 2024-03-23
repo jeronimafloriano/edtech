@@ -20,7 +20,6 @@ public class User extends DomainEntityId {
   @Column(name = "name")
   private String name;
 
-  @Size(max = 20, message = "The name must have a maximum of 20 characters.")
   @Column(name = "username")
   private String username;
 
@@ -49,6 +48,18 @@ public class User extends DomainEntityId {
     this.email = email;
     this.role = role;
     this.creationDate = Instant.now();
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public Email getEmail() {
+    return email;
+  }
+
+  public Role getRole() {
+    return role;
   }
 
   @Override
