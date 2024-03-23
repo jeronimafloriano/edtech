@@ -1,4 +1,4 @@
-package br.com.school.edtech.model.exceptions;
+package br.com.school.edtech.shared.model.exceptions;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

@@ -1,4 +1,4 @@
-package br.com.school.edtech.model.exceptions;
+package br.com.school.edtech.shared.model.exceptions;
 
 public enum ValidationMessage {
 
@@ -9,7 +9,9 @@ public enum ValidationMessage {
   REQUIRED_ROLE("0005", "Role is required."),
   INVALID_USERNAME("0006", "The username must contain only lowercase characters, no numerals and no spaces."),
   REQUIRED_USER("0007", "User is required."),
-  USER_NOT_FOUND("0008", "User not found with the given name.");
+  USER_NOT_FOUND("0008", "User not found with the given name."),
+  EMAIL_ALREADY_REGISTERED("0009", "Email already registered."),
+  USERNAME_ALREADY_REGISTERED("0009", "Email already registered.");
 
   private final String code;
   private final String message;

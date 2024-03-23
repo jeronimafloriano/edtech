@@ -1,8 +1,7 @@
-package br.com.school.edtech.model.exceptions;
+package br.com.school.edtech.shared.model.exceptions;
 
 
 import jakarta.validation.ValidationException;
-import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

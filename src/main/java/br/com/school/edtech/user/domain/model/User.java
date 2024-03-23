@@ -1,21 +1,21 @@
 package br.com.school.edtech.user.domain.model;
 
-import br.com.school.edtech.model.DomainEntityId;
-import br.com.school.edtech.model.exceptions.ValidationMessage;
-import br.com.school.edtech.model.exceptions.Validations;
+import br.com.school.edtech.shared.model.DomainEntityId;
+import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
+import br.com.school.edtech.shared.model.exceptions.Validations;
+import br.com.school.edtech.user.application.api.UserId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.Size;
 import java.time.Instant;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
-public class User extends DomainEntityId {
+public class User extends DomainEntityId<UserId> {
 
   @Column(name = "name")
   private String name;
@@ -35,7 +35,7 @@ public class User extends DomainEntityId {
 
   public User(String name, String username, Email email,
       Role role) {
-    super();
+    this();
 
     Validations.isNotBlank(name, ValidationMessage.REQUIRED_NAME);
     Validations.isNotBlank(username, ValidationMessage.REQUIRED_USERNAME);
@@ -48,6 +48,10 @@ public class User extends DomainEntityId {
     this.email = email;
     this.role = role;
     this.creationDate = Instant.now();
+  }
+
+  protected User() {
+    super(new UserId());
   }
 
   public String getName() {

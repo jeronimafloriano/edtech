@@ -1,24 +1,30 @@
-package br.com.school.edtech.model;
+package br.com.school.edtech.shared.model;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.MappedSuperclass;
 import java.io.Serializable;
-import java.util.UUID;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @MappedSuperclass
-public abstract class DomainEntityId implements Serializable {
+public abstract class DomainEntityId<ID> implements Serializable {
 
   @EmbeddedId
-  private final UUID id;
+  private ID id;
 
   protected DomainEntityId() {
-    this.id = UUID.randomUUID();
   }
 
-  public UUID getId() {
+  protected DomainEntityId(ID id) {
+    this.id = id;
+  }
+
+  public ID getId() {
     return id;
+  }
+
+  public void setId(ID id) {
+    this.id = id;
   }
 
   @Override

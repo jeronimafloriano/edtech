@@ -1,9 +1,10 @@
 package br.com.school.edtech.user.application.service;
 
 
-import br.com.school.edtech.model.exceptions.NotFoundException;
-import br.com.school.edtech.model.exceptions.ValidationMessage;
-import br.com.school.edtech.model.exceptions.Validations;
+import br.com.school.edtech.shared.model.exceptions.DuplicatedException;
+import br.com.school.edtech.shared.model.exceptions.NotFoundException;
+import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
+import br.com.school.edtech.shared.model.exceptions.Validations;
 import br.com.school.edtech.user.application.dto.UserDto;
 import br.com.school.edtech.user.domain.model.Email;
 import br.com.school.edtech.user.domain.model.User;
@@ -37,8 +38,27 @@ public class UserServiceImpl implements UserService {
     Validations.isNotNull(userDto, ValidationMessage.REQUIRED_USER);
 
     Email email = Email.of(userDto.getEmail());
+
+    validateDuplicityUsername(userDto.getUsername());
+    validateDuplicityEmail(email);
+
     User user = new User(userDto.getName(), userDto.getUsername(), email, userDto.getRole());
     userRepository.save(user);
     return UserDto.map(user);
   }
+
+  private void validateDuplicityEmail(Email email) {
+    userRepository.findByEmail(email)
+        .ifPresent(user -> {
+          throw new DuplicatedException(ValidationMessage.EMAIL_ALREADY_REGISTERED);
+        });
+  }
+
+  private void validateDuplicityUsername(String username) {
+    userRepository.findByUsername(username)
+        .ifPresent(user -> {
+          throw new DuplicatedException(ValidationMessage.USERNAME_ALREADY_REGISTERED);
+        });
+  }
+
 }

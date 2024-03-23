@@ -1,7 +1,7 @@
 package br.com.school.edtech.user.domain.model;
 
-import br.com.school.edtech.model.exceptions.InvalidArgumentException;
-import br.com.school.edtech.model.exceptions.ValidationMessage;
+import br.com.school.edtech.shared.model.exceptions.InvalidArgumentException;
+import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Embeddable;
@@ -24,6 +24,8 @@ public class Email {
 
     this.address = address;
   }
+
+  protected Email() {}
 
   public static Email of(String address) {
     return new Email(address);
