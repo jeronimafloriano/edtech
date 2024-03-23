@@ -1,5 +1,7 @@
 package br.com.school.edtech.user.domain.model;
 
+import br.com.school.edtech.model.exceptions.InvalidArgumentException;
+import br.com.school.edtech.model.exceptions.ValidationMessage;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Embeddable;
@@ -17,7 +19,7 @@ public class Email {
     EmailValidator validator = new EmailValidator();
 
     if (!validator.isValid(address, null)) {
-      throw new IllegalArgumentException();
+      throw new InvalidArgumentException(ValidationMessage.INVALID_EMAIL);
     }
 
     this.address = address;
