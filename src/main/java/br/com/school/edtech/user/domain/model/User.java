@@ -1,6 +1,8 @@
 package br.com.school.edtech.user.domain.model;
 
 import br.com.school.edtech.model.DomainEntityId;
+import br.com.school.edtech.model.exceptions.ValidationMessage;
+import br.com.school.edtech.model.exceptions.Validations;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -35,6 +37,12 @@ public class User extends DomainEntityId {
   public User(String name, String username, Email email,
       Role role) {
     super();
+
+    Validations.isNotBlank(name, ValidationMessage.REQUIRED_NAME);
+    Validations.isNotBlank(username, ValidationMessage.REQUIRED_USERNAME);
+    Validations.isNotNull(email, ValidationMessage.REQUIRED_EMAIL);
+    Validations.isNotNull(role, ValidationMessage.REQUIRED_ROLE);
+    Validations.isValidUsernameFormat(username, ValidationMessage.INVALID_USERNAME);
 
     this.name = name;
     this.username = username;
