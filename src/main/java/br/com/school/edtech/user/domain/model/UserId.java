@@ -1,4 +1,4 @@
-package br.com.school.edtech.user.application.api;
+package br.com.school.edtech.user.domain.model;
 
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
@@ -15,6 +15,10 @@ public class UserId implements Serializable {
 
   public UserId(UUID value) {
     this.value = value;
+  }
+
+  public static UserId of(UUID id) {
+    return new UserId(id);
   }
 
   public UUID getValue() {

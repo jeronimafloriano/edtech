@@ -3,7 +3,6 @@ package br.com.school.edtech.user.domain.model;
 import br.com.school.edtech.shared.model.DomainEntityId;
 import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
 import br.com.school.edtech.shared.model.exceptions.Validations;
-import br.com.school.edtech.user.application.api.UserId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
