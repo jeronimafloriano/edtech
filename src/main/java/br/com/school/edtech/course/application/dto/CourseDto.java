@@ -17,6 +17,9 @@ import lombok.Data;
 @Data
 public class CourseDto {
 
+  @JsonProperty(access = Access.READ_ONLY)
+  private UUID id;
+
   @NotNull
   private String name;
 
@@ -30,7 +33,7 @@ public class CourseDto {
 
   @JsonProperty(access = Access.WRITE_ONLY)
   @NotNull
-  private UUID idInstructor;;
+  private UUID idInstructor;
 
   @NotNull
   private String description;
@@ -48,6 +51,7 @@ public class CourseDto {
     Validations.isNotNull(course, ValidationMessage.REQUIRED_COURSE);
 
     CourseDto courseDto = new CourseDto();
+    courseDto.setId(course.getId().getValue());
     courseDto.setName(course.getName());
     courseDto.setCode(course.getCode());
     courseDto.setInstructor(UserDto.map(course.getInstructor()));

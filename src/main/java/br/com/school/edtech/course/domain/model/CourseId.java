@@ -17,6 +17,10 @@ public class CourseId implements Serializable {
     this.value = value;
   }
 
+  public static CourseId of(UUID id) {
+    return new CourseId(id);
+  }
+
   public UUID getValue() {
     return value;
   }
