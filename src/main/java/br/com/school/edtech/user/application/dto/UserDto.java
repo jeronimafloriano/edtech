@@ -8,10 +8,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.UUID;
 import lombok.Data;
 
 @Data
 public class UserDto {
+
+  @JsonProperty(access = Access.READ_ONLY)
+  @NotNull
+  private UUID id;
 
   @NotNull
   private String name;
@@ -31,6 +36,7 @@ public class UserDto {
     Validations.isNotNull(user, ValidationMessage.REQUIRED_USER);
 
     UserDto userDto = new UserDto();
+    userDto.setId(user.getId().getValue());
     userDto.setName(user.getName());
     userDto.setEmail(user.getEmail().getAddress());
     userDto.setRole(user.getRole());

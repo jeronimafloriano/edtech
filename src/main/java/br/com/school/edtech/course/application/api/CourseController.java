@@ -58,7 +58,7 @@ public class CourseController {
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Inactivated course")})
   @PutMapping("/{code}")
   public CourseDto inactivate(
-      @Parameter(description = "Course to be inactivated") @PathVariable String code) {
+      @Parameter(description = "Course code to be inactivated") @PathVariable String code) {
     return courseService.inactivate(code);
   }
 }

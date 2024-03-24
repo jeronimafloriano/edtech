@@ -4,6 +4,7 @@ import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.model.Status;
 import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
 import br.com.school.edtech.shared.model.exceptions.Validations;
+import br.com.school.edtech.user.application.dto.UserDto;
 import br.com.school.edtech.user.domain.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -25,7 +26,7 @@ public class CourseDto {
 
   @JsonProperty(access = Access.READ_ONLY)
   @NotNull
-  private User instructor;
+  private UserDto instructor;
 
   @JsonProperty(access = Access.WRITE_ONLY)
   @NotNull
@@ -49,7 +50,7 @@ public class CourseDto {
     CourseDto courseDto = new CourseDto();
     courseDto.setName(course.getName());
     courseDto.setCode(course.getCode());
-    courseDto.setInstructor(course.getInstructor());
+    courseDto.setInstructor(UserDto.map(course.getInstructor()));
     courseDto.setDescription(course.getDescription());
     courseDto.setStatus(course.getStatus());
     courseDto.setCreationDate(course.getCreationDate());

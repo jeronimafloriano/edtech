@@ -10,6 +10,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.Instant;
 import lombok.Getter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -26,7 +28,8 @@ public class Course extends DomainEntityId<CourseId> {
   @Column(name = "code")
   private String code;
 
-  @Column(name = "instructor")
+  @ManyToOne
+  @JoinColumn(name = "instructor_id")
   private User instructor;
 
   @Column(name = "description")
