@@ -20,7 +20,10 @@ public enum ValidationMessage {
   REQUIRED_COURSE("00014", "Course is required."),
   COURSE_NOT_FOUND("00015", "Course not found with the given code."),
   COURSE_ALREADY_REGISTERED("00016", "Course already registered with the given code."),
-  REQUIRED_USER_INSTRUCTOR("00017", "Only users of the instructor type can be instructors of a course.");
+  REQUIRED_USER_INSTRUCTOR("00017", "Only users of the instructor type can be instructors of a course."),
+  REQUIRED_ENROLLMENT("00018", "Enrollment is required."),
+  ENROLLMENT_ALREADY_REGISTERED("00019", "Enrollment already exist."),
+  COURSE_INACTIVE("00020", "It is not possible to enroll in an inactive course.");
 
   private final String code;
   private final String message;
