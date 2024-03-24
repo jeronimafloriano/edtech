@@ -11,7 +11,16 @@ public enum ValidationMessage {
   REQUIRED_USER("0007", "User is required."),
   USER_NOT_FOUND("0008", "User not found with the given name."),
   EMAIL_ALREADY_REGISTERED("0009", "Email already registered."),
-  USERNAME_ALREADY_REGISTERED("0009", "Email already registered.");
+  USERNAME_ALREADY_REGISTERED("0009", "Email already registered."),
+  REQUIRED_COURSE_CODE("00010", "Course code is required."),
+  REQUIRED_INSTRUCTOR("00011", "Course instructor is required."),
+  REQUIRED_DESCRIPTION("00012", "Description is required."),
+  INVALID_COURSE_CODE("00013", "A course code must be textual, with no spaces, \n"
+      + "numeric characters or special characters."),
+  REQUIRED_COURSE("00014", "Course is required."),
+  COURSE_NOT_FOUND("00015", "Course not found with the given code."),
+  COURSE_ALREADY_REGISTERED("00016", "Course already registered with the given code."),
+  REQUIRED_USER_INSTRUCTOR("00017", "Only users of the instructor type can be instructors of a course.");
 
   private final String code;
   private final String message;
