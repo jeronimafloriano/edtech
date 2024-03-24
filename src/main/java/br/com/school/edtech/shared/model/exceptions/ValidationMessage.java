@@ -23,7 +23,9 @@ public enum ValidationMessage {
   REQUIRED_USER_INSTRUCTOR("00017", "Only users of the instructor type can be instructors of a course."),
   REQUIRED_ENROLLMENT("00018", "Enrollment is required."),
   ENROLLMENT_ALREADY_REGISTERED("00019", "Enrollment already exist."),
-  COURSE_INACTIVE("00020", "It is not possible to enroll in an inactive course.");
+  COURSE_INACTIVE("00020", "It is not possible to enroll in an inactive course."),
+  REQUIRED_REVIEW_JUSTIFICATION("00021", "You must provide a justification for the review"),
+  REQUIRED_COURSE_REVIEW("00022", "Course review is required.");
 
   private final String code;
   private final String message;
