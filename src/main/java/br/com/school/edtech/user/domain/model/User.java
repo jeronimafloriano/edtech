@@ -9,10 +9,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import java.time.Instant;
+
+import lombok.Getter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@Getter
 @Entity
 public class User extends DomainEntityId<UserId> {
 
@@ -53,18 +56,6 @@ public class User extends DomainEntityId<UserId> {
     super(new UserId());
   }
 
-  public String getName() {
-    return name;
-  }
-
-  public Email getEmail() {
-    return email;
-  }
-
-  public Role getRole() {
-    return role;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -77,7 +68,7 @@ public class User extends DomainEntityId<UserId> {
 
     User user = (User) o;
 
-    return new EqualsBuilder().appendSuper(super.equals(o))
+    return new EqualsBuilder()
         .append(username, user.username).append(email, user.email).isEquals();
   }
 
