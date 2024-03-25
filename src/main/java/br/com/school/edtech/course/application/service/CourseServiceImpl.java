@@ -33,10 +33,12 @@ public class CourseServiceImpl implements CourseService {
 
   @Transactional(readOnly = true)
   @Override
-  public List<CourseDto> getAll(Pageable paginacao, String filter) {
+  public List<CourseDto> getAll(Pageable pagination, String filter) {
+    Validations.isNotNull(pagination, ValidationMessage.REQUIRED_PAGINATION);
+
     Page<Course> courses = filter!= null && !filter.isBlank()
-        ? courseRepository.findAll(createStatusFilter(filter), paginacao)
-        : courseRepository.findAll(paginacao);
+        ? courseRepository.findAll(createStatusFilter(filter), pagination)
+        : courseRepository.findAll(pagination);
 
     return courses.stream()
         .map(CourseDto::map)
@@ -66,7 +68,7 @@ public class CourseServiceImpl implements CourseService {
 
   @Override
   public CourseDto inactivate(String code) {
-    Validations.isNotNull(code, ValidationMessage.REQUIRED_COURSE_CODE);
+    Validations.isNotBlank(code, ValidationMessage.REQUIRED_COURSE_CODE);
 
     Course course = courseRepository.findByCode(code).orElseThrow(() -> {
       throw new NotFoundException(ValidationMessage.COURSE_NOT_FOUND, code);
