@@ -5,15 +5,17 @@ import br.com.school.edtech.course.domain.model.Status;
 import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
 import br.com.school.edtech.shared.model.exceptions.Validations;
 import br.com.school.edtech.user.application.dto.UserDto;
-import br.com.school.edtech.user.domain.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.Instant;
 import java.util.UUID;
-import lombok.Data;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @Data
 public class CourseDto {
 
@@ -46,6 +48,13 @@ public class CourseDto {
 
   @JsonProperty(access = Access.READ_ONLY)
   private Instant inactivationDate;
+
+  public CourseDto(String name, String code, UUID idInstructor, String description) {
+    this.name = name;
+    this.code = code;
+    this.idInstructor = idInstructor;
+    this.description = description;
+  }
 
   public static CourseDto map(Course course) {
     Validations.isNotNull(course, ValidationMessage.REQUIRED_COURSE);
