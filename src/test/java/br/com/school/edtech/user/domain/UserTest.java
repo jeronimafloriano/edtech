@@ -1,8 +1,8 @@
 package br.com.school.edtech.user.domain;
 
-import br.com.school.edtech.shared.model.exceptions.InvalidArgumentException;
-import br.com.school.edtech.shared.model.exceptions.RequiredArgumentException;
-import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
+import br.com.school.edtech.shared.exceptions.InvalidArgumentException;
+import br.com.school.edtech.shared.exceptions.RequiredArgumentException;
+import br.com.school.edtech.shared.exceptions.ValidationMessage;
 import br.com.school.edtech.user.domain.model.Email;
 import br.com.school.edtech.user.domain.model.Role;
 import br.com.school.edtech.user.domain.model.User;
