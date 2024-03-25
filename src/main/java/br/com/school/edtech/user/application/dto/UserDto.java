@@ -9,8 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.UUID;
-import lombok.Data;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @Data
 public class UserDto {
 
@@ -32,12 +35,20 @@ public class UserDto {
   @NotNull
   private Role role;
 
+  public UserDto(String name, String username, String email, Role role) {
+    this.name = name;
+    this.username = username;
+    this.email = email;
+    this.role = role;
+  }
+
   public static UserDto map(User user) {
     Validations.isNotNull(user, ValidationMessage.REQUIRED_USER);
 
     UserDto userDto = new UserDto();
     userDto.setId(user.getId().getValue());
     userDto.setName(user.getName());
+    userDto.setUsername(user.getUsername());
     userDto.setEmail(user.getEmail().getAddress());
     userDto.setRole(user.getRole());
 
