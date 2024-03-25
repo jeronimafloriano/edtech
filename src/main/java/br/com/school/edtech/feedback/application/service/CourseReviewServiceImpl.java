@@ -5,23 +5,19 @@ import static java.util.stream.Collectors.toList;
 
 import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.model.CourseId;
-import br.com.school.edtech.course.domain.repository.CourseRepository;
-import br.com.school.edtech.enrollment.domain.repository.EnrollmentRepository;
 import br.com.school.edtech.feedback.application.dto.CourseReviewDto;
 import br.com.school.edtech.feedback.domain.model.CourseReview;
+import br.com.school.edtech.feedback.domain.model.Rating;
 import br.com.school.edtech.feedback.domain.repository.CourseReviewRepository;
-import br.com.school.edtech.shared.model.exceptions.DuplicatedException;
-import br.com.school.edtech.shared.model.exceptions.NotFoundException;
-import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
-import br.com.school.edtech.shared.model.exceptions.Validations;
+import br.com.school.edtech.shared.exceptions.DuplicatedException;
+import br.com.school.edtech.shared.exceptions.ValidationMessage;
+import br.com.school.edtech.shared.exceptions.Validations;
+import br.com.school.edtech.shared.finder.CourseFinder;
+import br.com.school.edtech.shared.finder.UserFinder;
+import br.com.school.edtech.shared.notification.Notification;
 import br.com.school.edtech.user.domain.model.User;
 import br.com.school.edtech.user.domain.model.UserId;
-import br.com.school.edtech.user.domain.repository.UserRepository;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,41 +26,28 @@ import org.springframework.transaction.annotation.Transactional;
 public class CourseReviewServiceImpl implements CourseReviewService {
 
   private final CourseReviewRepository courseReviewRepository;
-  private final UserRepository userRepository;
-  private final CourseRepository courseRepository;
-  private final EnrollmentRepository enrollmentRepository;
+  private final UserFinder userFinder;
+  private final CourseFinder courseFinder;
+  private final Notification notification;
 
   public CourseReviewServiceImpl(CourseReviewRepository courseReviewRepository,
-      UserRepository userRepository, CourseRepository courseRepository,
-      EnrollmentRepository enrollmentRepository) {
+      UserFinder userFinder, CourseFinder courseFinder, Notification notification) {
     this.courseReviewRepository = courseReviewRepository;
-    this.userRepository = userRepository;
-    this.courseRepository = courseRepository;
-    this.enrollmentRepository = enrollmentRepository;
+    this.userFinder = userFinder;
+    this.courseFinder = courseFinder;
+    this.notification = notification;
   }
 
   @Transactional(readOnly = true)
   @Override
   public List<CourseReviewDto> getNPS(Pageable pageable) {
-    Page<CourseReview> courses = courseReviewRepository.findAll(pageable);
+    List<Course> courses = courseFinder.findCoursesWithMoreThanFourEnrollments();
 
-    List<CourseId> courseIds = courses.stream()
-        .map(courseReview -> courseReview.getCourse())
-        .map(course -> course.getId())
-        .collect(toList());
+    List<CourseReview> reviews = courseReviewRepository.findReviewsByCourses(courses);
 
-    Map<CourseId, Long> courseEnrollmentCount = enrollmentRepository.findAllByCourseId(courseIds).stream()
-        .collect(Collectors.groupingBy(enrollment -> enrollment.getCourse().getId(), Collectors.counting()));
-
-    Set<CourseId> coursesWithMoreThanFourEnrollments = courseEnrollmentCount.entrySet().stream()
-        .filter(entry -> entry.getValue() > 4)
-        .map(Map.Entry::getKey)
-        .collect(Collectors.toSet());
-
-    return courses.stream()
-        .filter(courseReview -> coursesWithMoreThanFourEnrollments.contains(courseReview.getCourse().getId()))
+    return reviews.stream()
         .map(CourseReviewDto::map)
-        .collect(Collectors.toList());
+        .collect(toList());
   }
 
   @Transactional
@@ -74,25 +57,23 @@ public class CourseReviewServiceImpl implements CourseReviewService {
 
     courseReviewRepository.findByCourseIdAndUserId(CourseId.of(courseReviewDto.getIdCourse()),
         UserId.of(courseReviewDto.getIdUser())).ifPresent(course -> {
-      throw new DuplicatedException(ValidationMessage.COURSE_ALREADY_REGISTERED);
+      throw new DuplicatedException(ValidationMessage.COURSE_REVIEW_ALREADY_REGISTERED);
     });
 
-    if(courseReviewDto.getRating().getValue() < 6) {
-      ///enviar notificação
-    }
-
-    User user = userRepository.findById(UserId.of(courseReviewDto.getIdUser())).orElseThrow(() -> {
-      throw new NotFoundException(ValidationMessage.USER_NOT_FOUND, courseReviewDto.getIdUser());
-    });
-
-    Course course = courseRepository.findById(CourseId.of(courseReviewDto.getIdCourse())).orElseThrow(() -> {
-      throw new NotFoundException(ValidationMessage.COURSE_NOT_FOUND, courseReviewDto.getIdCourse());
-    });
+    User user = userFinder.findById(courseReviewDto.getIdUser());
+    Course course = courseFinder.findById(courseReviewDto.getIdCourse());
 
     CourseReview courseReview = new CourseReview(user, course,
         courseReviewDto.getRating(), courseReviewDto.getJustification());
 
+    notificationSending(courseReview);
     courseReviewRepository.save(courseReview);
     return CourseReviewDto.map(courseReview);
+  }
+
+  private void notificationSending(CourseReview courseReview) {
+    if(courseReview.getRating().compareTo(Rating.SIX) < 0) {
+      notification.send(courseReview);
+    }
   }
 }
