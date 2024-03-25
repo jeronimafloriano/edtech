@@ -1,9 +1,10 @@
 package br.com.school.edtech.course.domain.model;
 
+import br.com.school.edtech.enrollment.domain.model.Enrollment;
 import br.com.school.edtech.shared.model.DomainEntityId;
-import br.com.school.edtech.shared.model.exceptions.InvalidArgumentException;
-import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
-import br.com.school.edtech.shared.model.exceptions.Validations;
+import br.com.school.edtech.shared.exceptions.InvalidArgumentException;
+import br.com.school.edtech.shared.exceptions.ValidationMessage;
+import br.com.school.edtech.shared.exceptions.Validations;
 import br.com.school.edtech.user.domain.model.Role;
 import br.com.school.edtech.user.domain.model.User;
 import jakarta.persistence.Column;
@@ -12,7 +13,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.time.Instant;
+import java.util.List;
 import lombok.Getter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -44,6 +47,9 @@ public class Course extends DomainEntityId<CourseId> {
 
   @Column(name = "inactivation_date")
   private Instant inactivationDate;
+
+  @OneToMany(mappedBy = "course")
+  private List<Enrollment> enrollments;
 
   public Course(String name, String code, User instructor, String description) {
     this();

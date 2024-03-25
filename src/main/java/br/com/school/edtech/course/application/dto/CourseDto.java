@@ -2,8 +2,8 @@ package br.com.school.edtech.course.application.dto;
 
 import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.model.Status;
-import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
-import br.com.school.edtech.shared.model.exceptions.Validations;
+import br.com.school.edtech.shared.exceptions.ValidationMessage;
+import br.com.school.edtech.shared.exceptions.Validations;
 import br.com.school.edtech.user.application.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
