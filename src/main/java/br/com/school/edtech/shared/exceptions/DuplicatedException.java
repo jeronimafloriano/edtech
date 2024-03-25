@@ -1,4 +1,4 @@
-package br.com.school.edtech.shared.model.exceptions;
+package br.com.school.edtech.shared.exceptions;
 
 
 import jakarta.validation.ValidationException;
@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class RequiredArgumentException extends ValidationException {
+public class DuplicatedException extends ValidationException {
 
-  public RequiredArgumentException(ValidationMessage message) {
+  public DuplicatedException(ValidationMessage message) {
     super(message.getMessage());
   }
 

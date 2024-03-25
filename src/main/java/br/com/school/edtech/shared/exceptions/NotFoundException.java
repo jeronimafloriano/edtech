@@ -1,4 +1,4 @@
-package br.com.school.edtech.shared.model.exceptions;
+package br.com.school.edtech.shared.exceptions;
 
 
 import jakarta.validation.ValidationException;

@@ -1,4 +1,4 @@
-package br.com.school.edtech.shared.model.exceptions;
+package br.com.school.edtech.shared.exceptions;
 
 public enum ValidationMessage {
 
@@ -9,7 +9,7 @@ public enum ValidationMessage {
   REQUIRED_ROLE("0005", "Role is required."),
   INVALID_USERNAME("0006", "The username must contain only lowercase characters, no numerals and no spaces."),
   REQUIRED_USER("0007", "User is required."),
-  USER_NOT_FOUND("0008", "User not found with the given name."),
+  USER_NOT_FOUND("0008", "User not found."),
   EMAIL_ALREADY_REGISTERED("0009", "Email already registered."),
   USERNAME_ALREADY_REGISTERED("0009", "Email already registered."),
   REQUIRED_COURSE_CODE("00010", "Course code is required."),
@@ -26,7 +26,8 @@ public enum ValidationMessage {
   COURSE_INACTIVE("00020", "It is not possible to enroll in an inactive course."),
   REQUIRED_REVIEW_JUSTIFICATION("00021", "You must provide a justification for the review"),
   REQUIRED_COURSE_REVIEW("00022", "Course review is required."),
-  REQUIRED_PAGINATION("00023", "Required pagination.");
+  REQUIRED_PAGINATION("00023", "Required pagination."),
+  COURSE_REVIEW_ALREADY_REGISTERED("00024", "Course review already registered.");
 
   private final String code;
   private final String message;
