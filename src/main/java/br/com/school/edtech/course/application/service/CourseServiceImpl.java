@@ -6,13 +6,12 @@ import static java.util.stream.Collectors.toList;
 import br.com.school.edtech.course.application.dto.CourseDto;
 import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.repository.CourseRepository;
-import br.com.school.edtech.shared.model.exceptions.DuplicatedException;
-import br.com.school.edtech.shared.model.exceptions.NotFoundException;
-import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
-import br.com.school.edtech.shared.model.exceptions.Validations;
+import br.com.school.edtech.shared.exceptions.DuplicatedException;
+import br.com.school.edtech.shared.exceptions.NotFoundException;
+import br.com.school.edtech.shared.exceptions.ValidationMessage;
+import br.com.school.edtech.shared.exceptions.Validations;
+import br.com.school.edtech.shared.finder.UserFinder;
 import br.com.school.edtech.user.domain.model.User;
-import br.com.school.edtech.user.domain.model.UserId;
-import br.com.school.edtech.user.domain.repository.UserRepository;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,11 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class CourseServiceImpl implements CourseService {
 
   private final CourseRepository courseRepository;
-  private final UserRepository userRepository;
+  private final UserFinder userFinder;
 
-  public CourseServiceImpl(CourseRepository courseRepository, UserRepository userRepository) {
+  public CourseServiceImpl(CourseRepository courseRepository, UserFinder userFinder) {
     this.courseRepository = courseRepository;
-    this.userRepository = userRepository;
+    this.userFinder = userFinder;
   }
 
   @Transactional(readOnly = true)
@@ -54,10 +53,7 @@ public class CourseServiceImpl implements CourseService {
       throw new DuplicatedException(ValidationMessage.COURSE_ALREADY_REGISTERED);
     });
 
-    User instructor = userRepository.findById(UserId.of(courseDto.getIdInstructor()))
-        .orElseThrow(() -> {
-          throw new NotFoundException(ValidationMessage.USER_NOT_FOUND, courseDto.getIdInstructor());
-        });
+    User instructor = userFinder.findById(courseDto.getIdInstructor());
 
     Course course = new Course(courseDto.getName(), courseDto.getCode(),
         instructor, courseDto.getDescription());

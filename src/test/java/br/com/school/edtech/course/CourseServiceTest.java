@@ -6,9 +6,13 @@ import br.com.school.edtech.course.application.service.CourseServiceImpl;
 import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.model.Status;
 import br.com.school.edtech.course.domain.repository.CourseRepository;
-import br.com.school.edtech.shared.model.exceptions.*;
+import br.com.school.edtech.shared.exceptions.DuplicatedException;
+import br.com.school.edtech.shared.exceptions.InvalidArgumentException;
+import br.com.school.edtech.shared.exceptions.NotFoundException;
+import br.com.school.edtech.shared.exceptions.RequiredArgumentException;
+import br.com.school.edtech.shared.exceptions.ValidationMessage;
 import br.com.school.edtech.user.application.dto.UserDto;
-import br.com.school.edtech.user.domain.repository.UserRepository;
+import br.com.school.edtech.shared.finder.UserFinder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +26,6 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,7 +39,7 @@ public class CourseServiceTest {
     CourseRepository repository;
 
     @Mock
-    UserRepository userRepository;
+    UserFinder userFinder;
 
     @InjectMocks
     CourseServiceImpl courseService;
@@ -63,7 +66,7 @@ public class CourseServiceTest {
         verify(repository, times(1)).findAll(pageable);
         verify(repository, never()).findAll(any(Specification.class), any(Pageable.class));
 
-        List<CourseDto> coursesDto = courses.stream().map(CourseDto::map).collect(Collectors.toList());
+        List<CourseDto> coursesDto = courses.stream().map(CourseDto::map).toList();
         assertEquals(coursesDto.size(), result.size());
         assertEquals(coursesDto.get(0), result.get(0));
         assertEquals(coursesDto.get(1), result.get(1));
@@ -85,7 +88,7 @@ public class CourseServiceTest {
         verify(repository, times(1)).findAll(any(Specification.class), any(Pageable.class));
         verify(repository, never()).findAll(pageable);
 
-        List<CourseDto> coursesDto = courses.stream().map(CourseDto::map).collect(Collectors.toList());
+        List<CourseDto> coursesDto = courses.stream().map(CourseDto::map).toList();
         assertEquals(coursesDto.size(), result.size());
         assertEquals(coursesDto.get(0), result.get(0));
         assertEquals(coursesDto.get(1), result.get(1));
@@ -114,7 +117,7 @@ public class CourseServiceTest {
                 course.getInstructor().getId().getValue(), course.getDescription());
 
         given(repository.findByCode(courseDto.getCode())).willReturn(Optional.empty());
-        given(userRepository.findById(any())).willReturn(Optional.of(course.getInstructor()));
+        given(userFinder.findById(any())).willReturn(course.getInstructor());
 
         //when
         ArgumentCaptor<Course> captor = ArgumentCaptor.forClass(Course.class);
@@ -166,13 +169,15 @@ public class CourseServiceTest {
 
     @DisplayName("Should throw an exception when trying to create a course with an instructor not found")
     @Test
-    void testRegister_InstructorNotFound() {
+    void testCreate_InstructorNotFound() {
         //given
         Course course = EdTechFactory.oneCourse();
-        CourseDto courseDto = new CourseDto();
+        CourseDto courseDto = new CourseDto(course.getName(), course.getCode(),
+            course.getInstructor().getId().getValue(), course.getDescription());
 
         given(repository.findByCode(courseDto.getCode())).willReturn(Optional.empty());
-        given(userRepository.findById(any())).willReturn(Optional.empty());
+        when(userFinder.findById(any())).thenThrow(new NotFoundException(ValidationMessage.USER_NOT_FOUND, ""));
+
 
         //when
         Throwable exceptionInstructorNotFound = assertThrows(NotFoundException.class, () ->
@@ -190,7 +195,6 @@ public class CourseServiceTest {
     void testInactivate() {
         //given
         Course course = EdTechFactory.oneCourse();
-        CourseDto courseDto = new CourseDto();
 
         given(repository.findByCode(course.getCode())).willReturn(Optional.of(course));
 
@@ -220,7 +224,7 @@ public class CourseServiceTest {
 
         //then
         assertEquals(ValidationMessage.REQUIRED_COURSE_CODE.getMessage(),
-                exceptionNullCode.getMessage());
+            exceptionBlanckCode.getMessage());
     }
 
     @DisplayName("It should throw an exception when trying to inactivate a course that doesn't exist")
