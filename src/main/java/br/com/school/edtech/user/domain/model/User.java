@@ -68,6 +68,10 @@ public class User extends DomainEntityId<UserId> {
 
     User user = (User) o;
 
+    if(user.getId() != null && user.getId().equals(getId())) {
+      return true;
+    }
+
     return new EqualsBuilder()
         .append(username, user.username).append(email, user.email).isEquals();
   }

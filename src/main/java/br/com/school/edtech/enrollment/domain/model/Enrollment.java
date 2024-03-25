@@ -60,7 +60,11 @@ public class Enrollment extends DomainEntityId<EnrollmentId> {
 
     Enrollment that = (Enrollment) o;
 
-    return new EqualsBuilder().appendSuper(super.equals(o))
+    if(that.getId() != null && that.getId().equals(getId())) {
+      return true;
+    }
+
+    return new EqualsBuilder()
         .append(user, that.user).append(course, that.course)
         .append(enrollmentDate, that.enrollmentDate).isEquals();
   }
