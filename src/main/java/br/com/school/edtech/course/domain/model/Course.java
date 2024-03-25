@@ -51,7 +51,7 @@ public class Course extends DomainEntityId<CourseId> {
     Validations.isNotBlank(name, ValidationMessage.REQUIRED_NAME);
     Validations.isNotBlank(code, ValidationMessage.REQUIRED_COURSE_CODE);
     Validations.isNotNull(instructor, ValidationMessage.REQUIRED_INSTRUCTOR);
-    Validations.isNotNull(description, ValidationMessage.REQUIRED_DESCRIPTION);
+    Validations.isNotBlank(description, ValidationMessage.REQUIRED_DESCRIPTION);
     Validations.isValidCourseCodeFormat(code, ValidationMessage.INVALID_COURSE_CODE);
 
     validateInstructor(instructor);
@@ -91,8 +91,11 @@ public class Course extends DomainEntityId<CourseId> {
 
     Course course = (Course) o;
 
-    return new EqualsBuilder().appendSuper(super.equals(o))
-        .append(code, course.code).isEquals();
+    if(course.getId() != null && course.getId().equals(getId())) {
+      return true;
+    }
+
+    return new EqualsBuilder().append(code, course.code).isEquals();
   }
 
   @Override
