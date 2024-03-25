@@ -1,10 +1,10 @@
 package br.com.school.edtech.user.application.service;
 
 
-import br.com.school.edtech.shared.model.exceptions.DuplicatedException;
-import br.com.school.edtech.shared.model.exceptions.NotFoundException;
-import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
-import br.com.school.edtech.shared.model.exceptions.Validations;
+import br.com.school.edtech.shared.exceptions.DuplicatedException;
+import br.com.school.edtech.shared.exceptions.NotFoundException;
+import br.com.school.edtech.shared.exceptions.ValidationMessage;
+import br.com.school.edtech.shared.exceptions.Validations;
 import br.com.school.edtech.user.application.dto.UserDto;
 import br.com.school.edtech.user.domain.model.Email;
 import br.com.school.edtech.user.domain.model.User;

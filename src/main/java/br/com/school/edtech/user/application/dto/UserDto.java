@@ -1,7 +1,7 @@
 package br.com.school.edtech.user.application.dto;
 
-import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
-import br.com.school.edtech.shared.model.exceptions.Validations;
+import br.com.school.edtech.shared.exceptions.ValidationMessage;
+import br.com.school.edtech.shared.exceptions.Validations;
 import br.com.school.edtech.user.domain.model.Role;
 import br.com.school.edtech.user.domain.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;

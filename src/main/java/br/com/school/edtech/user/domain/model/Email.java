@@ -1,7 +1,7 @@
 package br.com.school.edtech.user.domain.model;
 
-import br.com.school.edtech.shared.model.exceptions.InvalidArgumentException;
-import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
+import br.com.school.edtech.shared.exceptions.InvalidArgumentException;
+import br.com.school.edtech.shared.exceptions.ValidationMessage;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Embeddable;
