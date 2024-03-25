@@ -1,19 +1,19 @@
 package br.com.school.edtech.enrollment.application.dto;
 
 import br.com.school.edtech.course.application.dto.CourseDto;
-import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.enrollment.domain.model.Enrollment;
-import br.com.school.edtech.shared.model.exceptions.ValidationMessage;
-import br.com.school.edtech.shared.model.exceptions.Validations;
+import br.com.school.edtech.shared.exceptions.ValidationMessage;
+import br.com.school.edtech.shared.exceptions.Validations;
 import br.com.school.edtech.user.application.dto.UserDto;
-import br.com.school.edtech.user.domain.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Data
 public class EnrollmentDto {
 
@@ -33,6 +33,12 @@ public class EnrollmentDto {
 
   @JsonProperty(access = Access.READ_ONLY)
   private Instant enrollmentDate;
+
+  public EnrollmentDto(UUID userId, UUID courdeId, Instant enrollmentDate) {
+    this.userId = userId;
+    this.courdeId = courdeId;
+    this.enrollmentDate = enrollmentDate;
+  }
 
   public static EnrollmentDto map(Enrollment enrollment) {
     Validations.isNotNull(enrollment, ValidationMessage.REQUIRED_ENROLLMENT);
