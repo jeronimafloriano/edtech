@@ -25,7 +25,8 @@ public enum ValidationMessage {
   ENROLLMENT_ALREADY_REGISTERED("00019", "Enrollment already exist."),
   COURSE_INACTIVE("00020", "It is not possible to enroll in an inactive course."),
   REQUIRED_REVIEW_JUSTIFICATION("00021", "You must provide a justification for the review"),
-  REQUIRED_COURSE_REVIEW("00022", "Course review is required.");
+  REQUIRED_COURSE_REVIEW("00022", "Course review is required."),
+  REQUIRED_PAGINATION("00023", "Required pagination.");
 
   private final String code;
   private final String message;
