@@ -42,3 +42,6 @@ build/
 /target/
 /wells-fargo-ach-service/target/**
 /wells-fargo-api-client/target/**
+
+### Report ###
+src/main/resources/reports/result/
