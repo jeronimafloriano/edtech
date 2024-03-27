@@ -34,10 +34,9 @@ public class EnrollmentDto {
   @JsonProperty(access = Access.READ_ONLY)
   private Instant enrollmentDate;
 
-  public EnrollmentDto(UUID userId, UUID courdeId, Instant enrollmentDate) {
+  public EnrollmentDto(UUID userId, UUID courdeId) {
     this.userId = userId;
     this.courdeId = courdeId;
-    this.enrollmentDate = enrollmentDate;
   }
 
   public static EnrollmentDto map(Enrollment enrollment) {
