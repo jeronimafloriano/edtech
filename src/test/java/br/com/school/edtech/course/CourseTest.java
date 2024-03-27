@@ -1,6 +1,6 @@
 package br.com.school.edtech.course;
 
-import br.com.school.edtech.EdTechFactory;
+import br.com.school.edtech.EdTechFactoryTests;
 import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.model.Status;
 import br.com.school.edtech.shared.exceptions.InvalidArgumentException;
@@ -22,7 +22,7 @@ public class CourseTest {
 
     @BeforeEach
     void setUp() {
-        this.instructor = EdTechFactory.oneUserInstructor();
+        this.instructor = EdTechFactoryTests.oneUserInstructor();
     }
 
     @DisplayName("Should create user with all fields provided")

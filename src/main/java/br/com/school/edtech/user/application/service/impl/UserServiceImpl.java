@@ -1,14 +1,16 @@
-package br.com.school.edtech.user.application.service;
+package br.com.school.edtech.user.application.service.impl;
 
 
 import br.com.school.edtech.config.auth.JwtService;
 import br.com.school.edtech.config.auth.dto.LoginReqDto;
 import br.com.school.edtech.config.auth.dto.LoginResDto;
 import br.com.school.edtech.shared.exceptions.DuplicatedException;
+import br.com.school.edtech.shared.exceptions.InvalidArgumentException;
 import br.com.school.edtech.shared.exceptions.NotFoundException;
 import br.com.school.edtech.shared.exceptions.ValidationMessage;
 import br.com.school.edtech.shared.exceptions.Validations;
 import br.com.school.edtech.user.application.dto.UserDto;
+import br.com.school.edtech.user.application.service.UserService;
 import br.com.school.edtech.user.domain.model.Email;
 import br.com.school.edtech.user.domain.model.User;
 import br.com.school.edtech.user.domain.repository.UserRepository;
@@ -60,9 +62,10 @@ public class UserServiceImpl implements UserService {
 
   public LoginResDto login(LoginReqDto body) {
     User user = userRepository.findByEmail(Email.of(body.getEmail()))
-        .orElseThrow(() -> new RuntimeException("User not found"));
+        .orElseThrow(() -> new NotFoundException(ValidationMessage.USER_NOT_FOUND, body.getEmail()));
+
     if (!passwordEncoder.matches(body.getPassword(), user.getPassword())) {
-      throw new RuntimeException("Passwords do not match");
+      throw new InvalidArgumentException(ValidationMessage.INCORRECT_PASSWORD);
     }
     String token = jwtService.generateToke2(user.getId().getValue(),
         user.getEmail().getAddress());

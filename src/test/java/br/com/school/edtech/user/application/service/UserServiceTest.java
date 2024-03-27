@@ -5,6 +5,7 @@ import br.com.school.edtech.shared.exceptions.NotFoundException;
 import br.com.school.edtech.shared.exceptions.RequiredArgumentException;
 import br.com.school.edtech.shared.exceptions.ValidationMessage;
 import br.com.school.edtech.user.application.dto.UserDto;
+import br.com.school.edtech.user.application.service.impl.UserServiceImpl;
 import br.com.school.edtech.user.domain.model.Email;
 import br.com.school.edtech.user.domain.model.Role;
 import br.com.school.edtech.user.domain.model.User;

@@ -47,6 +47,7 @@ public class SecurityConfig {
   @Bean
   public WebMvcConfigurer corsConfig() {
     return new WebMvcConfigurer() {
+      @Override
       public void addCorsMappings(@NotNull CorsRegistry registry) {
         registry.addMapping("/**")
           .allowedMethods("*")

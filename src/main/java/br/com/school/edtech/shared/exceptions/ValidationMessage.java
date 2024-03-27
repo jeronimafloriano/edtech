@@ -27,7 +27,9 @@ public enum ValidationMessage {
   REQUIRED_REVIEW_JUSTIFICATION("00021", "You must provide a justification for the review"),
   REQUIRED_COURSE_REVIEW("00022", "Course review is required."),
   REQUIRED_PAGINATION("00023", "Required pagination."),
-  COURSE_REVIEW_ALREADY_REGISTERED("00024", "Course review already registered.");
+  COURSE_REVIEW_ALREADY_REGISTERED("00024", "Course review already registered."),
+  REQUIRED_PASSWORD("00025", "Password is required"),
+  INCORRECT_PASSWORD("00026", "Passwords do not match");
 
   private final String code;
   private final String message;

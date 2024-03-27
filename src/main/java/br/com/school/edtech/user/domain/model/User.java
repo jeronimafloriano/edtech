@@ -46,6 +46,7 @@ public class User extends DomainEntityId<UserId> {
     Validations.isNotBlank(username, ValidationMessage.REQUIRED_USERNAME);
     Validations.isNotNull(email, ValidationMessage.REQUIRED_EMAIL);
     Validations.isNotNull(role, ValidationMessage.REQUIRED_ROLE);
+    Validations.isNotBlank(password, ValidationMessage.REQUIRED_PASSWORD);
     Validations.isValidUsernameFormat(username, ValidationMessage.INVALID_USERNAME);
 
     this.name = name;

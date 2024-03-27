@@ -1,8 +1,8 @@
 package br.com.school.edtech.course;
 
-import br.com.school.edtech.EdTechFactory;
+import br.com.school.edtech.EdTechFactoryTests;
 import br.com.school.edtech.course.application.dto.CourseDto;
-import br.com.school.edtech.course.application.service.CourseServiceImpl;
+import br.com.school.edtech.course.application.service.impl.CourseServiceImpl;
 import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.model.Status;
 import br.com.school.edtech.course.domain.repository.CourseRepository;
@@ -48,7 +48,7 @@ public class CourseServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.courses = EdTechFactory.coursesList();
+        this.courses = EdTechFactoryTests.coursesList();
     }
 
     @DisplayName("Should search for a course by going through a pagination")
@@ -112,7 +112,7 @@ public class CourseServiceTest {
     @Test
     void testCreate() {
         //given
-        Course course = EdTechFactory.oneCourse();
+        Course course = EdTechFactoryTests.oneCourse();
         CourseDto courseDto = new CourseDto(course.getName(), course.getCode(),
                 course.getInstructor().getId().getValue(), course.getDescription());
 
@@ -151,7 +151,7 @@ public class CourseServiceTest {
     @Test
     void testCreate_DuplicatedCourse() {
         //given
-        Course course = EdTechFactory.oneCourse();
+        Course course = EdTechFactoryTests.oneCourse();
         CourseDto courseDto = new CourseDto();
 
         given(repository.findByCode(courseDto.getCode())).willReturn(Optional.of(course));
@@ -171,7 +171,7 @@ public class CourseServiceTest {
     @Test
     void testCreate_InstructorNotFound() {
         //given
-        Course course = EdTechFactory.oneCourse();
+        Course course = EdTechFactoryTests.oneCourse();
         CourseDto courseDto = new CourseDto(course.getName(), course.getCode(),
             course.getInstructor().getId().getValue(), course.getDescription());
 
@@ -194,7 +194,7 @@ public class CourseServiceTest {
     @Test
     void testInactivate() {
         //given
-        Course course = EdTechFactory.oneCourse();
+        Course course = EdTechFactoryTests.oneCourse();
 
         given(repository.findByCode(course.getCode())).willReturn(Optional.of(course));
 
