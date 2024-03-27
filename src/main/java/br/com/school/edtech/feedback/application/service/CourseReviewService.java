@@ -1,12 +1,11 @@
 package br.com.school.edtech.feedback.application.service;
 
 import br.com.school.edtech.feedback.application.dto.CourseReviewDto;
-import br.com.school.edtech.feedback.application.dto.Nps;
-import java.util.List;
+import java.util.Map;
 
 public interface CourseReviewService {
 
-  List<Nps> getNPS();
+  Map<String, Double> getNPS();
 
   CourseReviewDto register(CourseReviewDto courseReviewDto);
 }

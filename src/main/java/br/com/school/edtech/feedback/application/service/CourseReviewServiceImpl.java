@@ -1,12 +1,8 @@
 package br.com.school.edtech.feedback.application.service;
 
-
-import static java.util.stream.Collectors.toList;
-
 import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.model.CourseId;
 import br.com.school.edtech.feedback.application.dto.CourseReviewDto;
-import br.com.school.edtech.feedback.application.dto.Nps;
 import br.com.school.edtech.feedback.domain.model.CourseReview;
 import br.com.school.edtech.feedback.domain.model.Rating;
 import br.com.school.edtech.feedback.domain.repository.CourseReviewRepository;
@@ -19,6 +15,8 @@ import br.com.school.edtech.shared.notification.Notification;
 import br.com.school.edtech.user.domain.model.User;
 import br.com.school.edtech.user.domain.model.UserId;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,14 +39,15 @@ public class CourseReviewServiceImpl implements CourseReviewService {
 
   @Transactional(readOnly = true)
   @Override
-  public List<Nps> getNPS() {
+  public Map<String, Double> getNPS() {
     List<Course> courses = courseFinder.findCoursesWithMoreThanFourEnrollments();
 
     List<CourseReview> reviews = courseReviewRepository.findReviewsByCourses(courses);
 
-    return reviews.stream()
-        .map(Nps::map)
-        .collect(toList());
+    Map<String, List<CourseReview>> ratingsByCourse = reviews.stream()
+        .collect(Collectors.groupingBy(courseReview -> courseReview.getCourse().getName()));
+
+    return npsCalculation(ratingsByCourse);
   }
 
   @Transactional
@@ -76,5 +75,21 @@ public class CourseReviewServiceImpl implements CourseReviewService {
     if(courseReview.getRating().compareTo(Rating.SIX) < 0) {
       notification.send(courseReview);
     }
+  }
+
+  private Map<String, Double> npsCalculation(Map<String, List<CourseReview>> ratingsByCourse) {
+    return ratingsByCourse.entrySet().stream()
+        .collect(Collectors.toMap(
+            Map.Entry::getKey,
+            entry -> {
+              long ratingsMoreThenEight = entry.getValue().stream()
+                  .filter(review -> review.getRating().getValue() > 8)
+                  .count();
+              long ratingsLessThenSix = entry.getValue().stream()
+                  .filter(review -> review.getRating().getValue() < 6)
+                  .count();
+              int totalReviews = entry.getValue().size();
+              return ((double) (ratingsMoreThenEight - ratingsLessThenSix) / totalReviews) * 100;
+            }));
   }
 }

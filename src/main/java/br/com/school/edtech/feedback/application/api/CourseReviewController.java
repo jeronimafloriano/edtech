@@ -1,14 +1,13 @@
 package br.com.school.edtech.feedback.application.api;
 
 import br.com.school.edtech.feedback.application.dto.CourseReviewDto;
-import br.com.school.edtech.feedback.application.dto.Nps;
 import br.com.school.edtech.feedback.application.service.CourseReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,8 +32,8 @@ public class CourseReviewController {
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Report received")})
   @PreAuthorize("hasAnyAuthority('ADMIN')")
   @GetMapping()
-  public ResponseEntity<List<Nps>> getNPS() {
-    List<Nps> courses = courseReviewService.getNPS();
+  public ResponseEntity<Map<String, Double>> getNPS() {
+    Map<String, Double> courses = courseReviewService.getNPS();
     return new ResponseEntity<>(courses, HttpStatus.OK);
   }
 
