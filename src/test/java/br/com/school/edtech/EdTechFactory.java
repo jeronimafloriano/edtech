@@ -15,7 +15,7 @@ public class EdTechFactory {
     private static final String description = "Basic Sql course";
 
     public static User oneUserInstructor() {
-        return new User("Mary", "mary", Email.of("mary@email.com"), Role.INSTRUCTOR);
+        return new User("Mary", "mary", Email.of("mary@email.com"), Role.INSTRUCTOR, "xpto");
     }
 
     public static Course oneCourse() {

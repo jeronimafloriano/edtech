@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,6 +32,9 @@ public class UserServiceTest {
     @Mock
     UserRepository repository;
 
+    @Mock
+    PasswordEncoder encoder;
+
     @InjectMocks
     UserServiceImpl userService;
 
@@ -38,7 +42,7 @@ public class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.user = new User("Jhon", "jhon", Email.of("jhon@email.com"), Role.STUDENT);
+        this.user = new User("Jhon", "jhon", Email.of("jhon@email.com"), Role.STUDENT, "xpto");
     }
 
     @DisplayName("Should search for a user by their username")
@@ -84,7 +88,7 @@ public class UserServiceTest {
     void testRegister() {
         //given
         UserDto userDto = new UserDto("Mary", "mary",
-                "mary@email.com", Role.INSTRUCTOR);
+                "mary@email.com", Role.INSTRUCTOR, "xpto");
 
         given(repository.findByUsername(userDto.getUsername())).willReturn(Optional.empty());
         given(repository.findByEmail(any())).willReturn(Optional.empty());
@@ -115,7 +119,7 @@ public class UserServiceTest {
     void testRegister_DuplicatedUsername() {
         //given
         UserDto userDto = new UserDto("Mary", "mary",
-                "mary@email.com", Role.INSTRUCTOR);
+                "mary@email.com", Role.INSTRUCTOR, "xpto");
 
         given(repository.findByUsername(userDto.getUsername())).willReturn(Optional.of(user));
 
@@ -136,7 +140,7 @@ public class UserServiceTest {
     void testRegister_DuplicatedEmail() {
         //given
         UserDto userDto = new UserDto("Mary", "mary",
-                "mary@email.com", Role.INSTRUCTOR);
+                "mary@email.com", Role.INSTRUCTOR, "xpto");
 
         given(repository.findByUsername(userDto.getUsername())).willReturn(Optional.empty());
         given(repository.findByEmail(any())).willReturn(Optional.of(user));
