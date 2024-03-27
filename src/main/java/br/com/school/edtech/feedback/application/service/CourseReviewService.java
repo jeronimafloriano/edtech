@@ -1,12 +1,12 @@
 package br.com.school.edtech.feedback.application.service;
 
 import br.com.school.edtech.feedback.application.dto.CourseReviewDto;
+import br.com.school.edtech.feedback.application.dto.Nps;
 import java.util.List;
-import org.springframework.data.domain.Pageable;
 
 public interface CourseReviewService {
 
-  List<CourseReviewDto> getNPS(Pageable pageable);
+  List<Nps> getNPS();
 
   CourseReviewDto register(CourseReviewDto courseReviewDto);
 }

@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toList;
 import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.model.CourseId;
 import br.com.school.edtech.feedback.application.dto.CourseReviewDto;
+import br.com.school.edtech.feedback.application.dto.Nps;
 import br.com.school.edtech.feedback.domain.model.CourseReview;
 import br.com.school.edtech.feedback.domain.model.Rating;
 import br.com.school.edtech.feedback.domain.repository.CourseReviewRepository;
@@ -18,7 +19,6 @@ import br.com.school.edtech.shared.notification.Notification;
 import br.com.school.edtech.user.domain.model.User;
 import br.com.school.edtech.user.domain.model.UserId;
 import java.util.List;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,15 +38,16 @@ public class CourseReviewServiceImpl implements CourseReviewService {
     this.notification = notification;
   }
 
+
   @Transactional(readOnly = true)
   @Override
-  public List<CourseReviewDto> getNPS(Pageable pageable) {
+  public List<Nps> getNPS() {
     List<Course> courses = courseFinder.findCoursesWithMoreThanFourEnrollments();
 
     List<CourseReview> reviews = courseReviewRepository.findReviewsByCourses(courses);
 
     return reviews.stream()
-        .map(CourseReviewDto::map)
+        .map(Nps::map)
         .collect(toList());
   }
 
