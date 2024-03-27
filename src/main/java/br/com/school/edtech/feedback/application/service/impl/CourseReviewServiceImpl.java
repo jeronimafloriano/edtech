@@ -1,5 +1,6 @@
 package br.com.school.edtech.feedback.application.service.impl;
 
+import br.com.school.edtech.config.MapDataSource;
 import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.model.CourseId;
 import br.com.school.edtech.feedback.application.dto.CourseReviewDto;
@@ -8,6 +9,7 @@ import br.com.school.edtech.feedback.domain.model.CourseReview;
 import br.com.school.edtech.feedback.domain.model.Rating;
 import br.com.school.edtech.feedback.domain.repository.CourseReviewRepository;
 import br.com.school.edtech.shared.exceptions.DuplicatedException;
+import br.com.school.edtech.shared.exceptions.ReportException;
 import br.com.school.edtech.shared.exceptions.ValidationMessage;
 import br.com.school.edtech.shared.exceptions.Validations;
 import br.com.school.edtech.shared.finder.CourseFinder;
@@ -18,11 +20,23 @@ import br.com.school.edtech.user.domain.model.UserId;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CourseReviewServiceImpl implements CourseReviewService {
+
+  @Value("${path.report.configuration}")
+  private String pathConfigurationReport;
+
+  @Value("${path.report.result}")
+  private String pathResultReport;
 
   private final CourseReviewRepository courseReviewRepository;
   private final UserFinder userFinder;
@@ -48,7 +62,11 @@ public class CourseReviewServiceImpl implements CourseReviewService {
     Map<String, List<CourseReview>> ratingsByCourse = reviews.stream()
         .collect(Collectors.groupingBy(courseReview -> courseReview.getCourse().getName()));
 
-    return npsCalculation(ratingsByCourse);
+    Map<String, Double> npsResult = npsCalculation(ratingsByCourse);
+
+    generateReport(npsResult);
+
+    return npsResult;
   }
 
   @Transactional
@@ -95,5 +113,18 @@ public class CourseReviewServiceImpl implements CourseReviewService {
               int totalReviews = entry.getValue().size();
               return ((double) (ratingsMoreThenEight - ratingsLessThenSix) / totalReviews) * 100;
             }));
+  }
+
+  private void generateReport(Map<String, Double> stringDoubleMap) {
+    try {
+      JasperReport jasperReport = JasperCompileManager.compileReport(pathConfigurationReport);
+      JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, new MapDataSource(
+          stringDoubleMap));
+      String filePath = pathResultReport;
+      JasperExportManager.exportReportToPdfFile(jasperPrint, filePath);
+
+    } catch (Exception ex) {
+      throw new ReportException(ex.getMessage());
+    }
   }
 }

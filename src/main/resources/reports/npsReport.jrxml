@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+  name="curso_com_mais_matriculas"
+  language="groovy"
+  pageWidth="595"
+  pageHeight="842"
+  columnWidth="555"
+  leftMargin="20"
+  rightMargin="20"
+  topMargin="20"
+  bottomMargin="20">
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+    <field name="nome_curso" class="java.lang.String"/>
+    <field name="nps" class="java.lang.Double"/>
+    <title>
+        <band height="50">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="30"/>
+                <textElement>
+                    <font size="16"/>
+                </textElement>
+                <text><![CDATA[NPS DOS CURSOS]]></text>
+            </staticText>
+        </band>
+    </title>
+    <columnHeader>
+        <band height="20">
+            <staticText>
+                <reportElement x="0" y="0" width="250" height="20"/>
+                <textElement>
+                    <font size="12"/>
+                </textElement>
+                <text><![CDATA[Nome do curso]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="250" y="0" width="305" height="20"/>
+                <textElement>
+                    <font size="12"/>
+                </textElement>
+                <text><![CDATA[NPS]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="20">
+            <textField>
+                <reportElement x="0" y="0" width="250" height="20"/>
+                <textFieldExpression><![CDATA[$F{nome_curso}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="250" y="0" width="305" height="20"/>
+                <textFieldExpression><![CDATA[$F{nps}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+</jasperReport>
