@@ -93,6 +93,7 @@ public class UserServiceTest {
 
         given(repository.findByUsername(userDto.getUsername())).willReturn(Optional.empty());
         given(repository.findByEmail(any())).willReturn(Optional.empty());
+        given(encoder.encode(userDto.getPassword())).willReturn("xxxxx");
 
         //when
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
