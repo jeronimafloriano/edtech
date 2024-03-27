@@ -9,8 +9,13 @@ import org.springframework.stereotype.Service;
 public class EmailNotification implements Notification {
 
   @Override
-  public void send(CourseReview courseReview) {
-    User instructor = courseReview.getCourse().getInstructor();
-    System.out.println(String.format("Send email to: %s", instructor));
+  public void send(String recipientEmail, String subject, String body) {
+      System.out.println(
+          "Simulating sending email to [%s]:\n".formatted(recipientEmail)
+      );
+      System.out.println("""
+          Subject: %s
+          Body: %s
+         """.formatted(subject, body));
   }
 }

@@ -1,8 +1,9 @@
-package br.com.school.edtech.feedback.application.service;
+package br.com.school.edtech.feedback.application.service.impl;
 
 import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.model.CourseId;
 import br.com.school.edtech.feedback.application.dto.CourseReviewDto;
+import br.com.school.edtech.feedback.application.service.CourseReviewService;
 import br.com.school.edtech.feedback.domain.model.CourseReview;
 import br.com.school.edtech.feedback.domain.model.Rating;
 import br.com.school.edtech.feedback.domain.repository.CourseReviewRepository;
@@ -73,7 +74,10 @@ public class CourseReviewServiceImpl implements CourseReviewService {
 
   private void notificationSending(CourseReview courseReview) {
     if(courseReview.getRating().compareTo(Rating.SIX) < 0) {
-      notification.send(courseReview);
+      String course = courseReview.getCourse().getName();
+      String instructor = courseReview.getCourse().getInstructor().getName();
+      String justification = courseReview.getJustification();
+      notification.send(instructor, String.format("Review of course: %s", course), justification);
     }
   }
 
