@@ -10,6 +10,10 @@ Java 21 or higher
 Docker
 Maven 3.2 or higher
 
+## Running the application 
+In the root of the project, open a terminal and run: docker-compose up
+Open another terminal also in the root of the project and run: mvn spring-boot:run
+
 ## Swagger
 The application has been documented using swagger and can be accessed at http://localhost:8080/swagger-ui/index.html.
 
