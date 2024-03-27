@@ -1,6 +1,9 @@
 package br.com.school.edtech.user.application.service;
 
 
+import br.com.school.edtech.config.auth.JwtService;
+import br.com.school.edtech.config.auth.dto.LoginReqDto;
+import br.com.school.edtech.config.auth.dto.LoginResDto;
 import br.com.school.edtech.shared.exceptions.DuplicatedException;
 import br.com.school.edtech.shared.exceptions.NotFoundException;
 import br.com.school.edtech.shared.exceptions.ValidationMessage;
@@ -9,6 +12,7 @@ import br.com.school.edtech.user.application.dto.UserDto;
 import br.com.school.edtech.user.domain.model.Email;
 import br.com.school.edtech.user.domain.model.User;
 import br.com.school.edtech.user.domain.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
+  private final JwtService jwtService;
+  private final PasswordEncoder passwordEncoder;
 
-  public UserServiceImpl(UserRepository userRepository) {
+  public UserServiceImpl(UserRepository userRepository, JwtService jwtService,
+      PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
+    this.jwtService = jwtService;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Transactional(readOnly = true)
@@ -42,9 +51,22 @@ public class UserServiceImpl implements UserService {
     validateDuplicityUsername(userDto.getUsername());
     validateDuplicityEmail(email);
 
-    User user = new User(userDto.getName(), userDto.getUsername(), email, userDto.getRole());
+    String encode = passwordEncoder.encode(userDto.getPassword());
+    User user = new User(userDto.getName(), userDto.getUsername(),
+        email, userDto.getRole(), encode);
     userRepository.save(user);
     return UserDto.map(user);
+  }
+
+  public LoginResDto login(LoginReqDto body) {
+    User user = userRepository.findByEmail(Email.of(body.getEmail()))
+        .orElseThrow(() -> new RuntimeException("User not found"));
+    if (!passwordEncoder.matches(body.getPassword(), user.getPassword())) {
+      throw new RuntimeException("Passwords do not match");
+    }
+    String token = jwtService.generateToke2(user.getId().getValue(),
+        user.getEmail().getAddress());
+    return new LoginResDto(token);
   }
 
   private void validateDuplicityEmail(Email email) {
