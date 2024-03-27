@@ -46,46 +46,52 @@ public class UserTest {
     @Test
     void testCreateInvalidUser(){
         //when
-        Throwable exceptionNullName = assertThrows(RequiredArgumentException.class, () -> {
-            User user = new User(null, username, email, Role.STUDENT, "xpto");;
-        });
+        Throwable exceptionNullName = assertThrows(RequiredArgumentException.class, () ->
+            new User(null, username, email, Role.STUDENT, "xpto"));
         //then
         assertEquals(ValidationMessage.REQUIRED_NAME.getMessage(), exceptionNullName.getMessage());
 
         //when
-        Throwable exceptionBlankName = assertThrows(InvalidArgumentException.class, () -> {
-            User user = new User("", username, email, Role.STUDENT, "xpto");
-        });
+        Throwable exceptionBlankName = assertThrows(InvalidArgumentException.class, () ->
+            new User("", username, email, Role.STUDENT, "xpto"));
         //then
         assertEquals(ValidationMessage.REQUIRED_NAME.getMessage(), exceptionBlankName.getMessage());
 
         //when
-        Throwable exceptionNullUsername = assertThrows(RequiredArgumentException.class, () -> {
-            User user = new User(name, null, email, Role.STUDENT, "xpto");
-        });
+        Throwable exceptionNullUsername = assertThrows(RequiredArgumentException.class, () ->
+            new User(name, null, email, Role.STUDENT, "xpto"));
         //then
         assertEquals(ValidationMessage.REQUIRED_USERNAME.getMessage(), exceptionNullUsername.getMessage());
 
         //when
-        Throwable exceptionBlankUsername = assertThrows(InvalidArgumentException.class, () -> {
-            User user = new User(name, "", email, Role.STUDENT, "xpto");
-        });
+        Throwable exceptionBlankUsername = assertThrows(InvalidArgumentException.class, () ->
+            new User(name, "", email, Role.STUDENT, "xpto"));
         //then
         assertEquals(ValidationMessage.REQUIRED_USERNAME.getMessage(), exceptionBlankUsername.getMessage());
 
         //when
-        Throwable exceptionNullEmail = assertThrows(RequiredArgumentException.class, () -> {
-            User user = new User(name, username, null, Role.STUDENT, "xpto");
-        });
+        Throwable exceptionNullEmail = assertThrows(RequiredArgumentException.class, () ->
+            new User(name, username, null, Role.STUDENT, "xpto"));
         //then
         assertEquals(ValidationMessage.REQUIRED_EMAIL.getMessage(), exceptionNullEmail.getMessage());
 
         //when
-        Throwable exceptionNullRole = assertThrows(RequiredArgumentException.class, () -> {
-            User user = new User(name, username, email, null, "xpto");
-        });
+        Throwable exceptionNullRole = assertThrows(RequiredArgumentException.class, () ->
+            new User(name, username, email, null, "xpto"));
         //then
         assertEquals(ValidationMessage.REQUIRED_ROLE.getMessage(), exceptionNullRole.getMessage());
+
+        //when
+        Throwable exceptionBlankPassword = assertThrows(InvalidArgumentException.class, () ->
+            new User(name, username, email, Role.STUDENT, ""));
+        //then
+        assertEquals(ValidationMessage.REQUIRED_PASSWORD.getMessage(), exceptionBlankPassword.getMessage());
+
+        //when
+        Throwable exceptionNullPassword = assertThrows(RequiredArgumentException.class, () ->
+            new User(name, username, email, Role.STUDENT, null));
+        //then
+        assertEquals(ValidationMessage.REQUIRED_PASSWORD.getMessage(), exceptionNullPassword.getMessage());
     }
 
     @DisplayName("Should throw exception when trying to create user with invalid username format")
