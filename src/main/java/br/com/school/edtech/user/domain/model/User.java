@@ -25,6 +25,9 @@ public class User extends DomainEntityId<UserId> {
   @Column(name = "username")
   private String username;
 
+  @Column(name = "password")
+  private String password;
+
   @Embedded
   private Email email;
 
@@ -36,7 +39,7 @@ public class User extends DomainEntityId<UserId> {
   private Instant creationDate;
 
   public User(String name, String username, Email email,
-      Role role) {
+      Role role, String password) {
     this();
 
     Validations.isNotBlank(name, ValidationMessage.REQUIRED_NAME);
@@ -49,6 +52,7 @@ public class User extends DomainEntityId<UserId> {
     this.username = username;
     this.email = email;
     this.role = role;
+    this.password = password;
     this.creationDate = Instant.now();
   }
 

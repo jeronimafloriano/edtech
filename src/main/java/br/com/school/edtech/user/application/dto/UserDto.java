@@ -32,14 +32,21 @@ public class UserDto {
   @NotNull
   private String email;
 
+  @JsonProperty(access = Access.WRITE_ONLY)
+
+  @Size(max = 20, message = "The password must have a maximum of 20 characters.")
+  @NotNull
+  private String password;
+
   @NotNull
   private Role role;
 
-  public UserDto(String name, String username, String email, Role role) {
+  public UserDto(String name, String username, String email, Role role, String password) {
     this.name = name;
     this.username = username;
     this.email = email;
     this.role = role;
+    this.password = password;
   }
 
   public static UserDto map(User user) {

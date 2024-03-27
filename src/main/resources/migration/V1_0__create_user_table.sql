@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS `user` (
     username              VARCHAR(20) NOT NULL,
     email                 VARCHAR(255) NOT NULL,
     role                  VARCHAR(50) NOT NULL,
+    password              VARCHAR(20) NOT NULL,
     creationDate          TIMESTAMP,
     CONSTRAINT unique_username_email UNIQUE (username, email)
 ) ENGINE=InnoDB;
