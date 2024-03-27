@@ -1,8 +1,9 @@
-package br.com.school.edtech.enrollment.application.service;
+package br.com.school.edtech.enrollment.application.service.impl;
 
 import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.model.Status;
 import br.com.school.edtech.enrollment.application.dto.EnrollmentDto;
+import br.com.school.edtech.enrollment.application.service.EnrollmentService;
 import br.com.school.edtech.enrollment.domain.model.Enrollment;
 import br.com.school.edtech.enrollment.domain.repository.EnrollmentRepository;
 import br.com.school.edtech.shared.exceptions.DuplicatedException;

@@ -8,7 +8,7 @@ import br.com.school.edtech.user.domain.model.User;
 import java.util.Arrays;
 import java.util.List;
 
-public class EdTechFactory {
+public class EdTechFactoryTests {
 
     private static final String name = "Basic Sql";
     private static final String code = "basic-sql";
@@ -16,6 +16,10 @@ public class EdTechFactory {
 
     public static User oneUserInstructor() {
         return new User("Mary", "mary", Email.of("mary@email.com"), Role.INSTRUCTOR, "xpto");
+    }
+
+    public static User oneUserStudent() {
+        return new User("Jhony", "jhony", Email.of("jhony@email.com"), Role.STUDENT, "xpto");
     }
 
     public static Course oneCourse() {

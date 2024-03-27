@@ -1,9 +1,10 @@
-package br.com.school.edtech.course.application.service;
+package br.com.school.edtech.course.application.service.impl;
 
 
 import static java.util.stream.Collectors.toList;
 
 import br.com.school.edtech.course.application.dto.CourseDto;
+import br.com.school.edtech.course.application.service.CourseService;
 import br.com.school.edtech.course.domain.model.Course;
 import br.com.school.edtech.course.domain.repository.CourseRepository;
 import br.com.school.edtech.shared.exceptions.DuplicatedException;
@@ -41,7 +42,7 @@ public class CourseServiceImpl implements CourseService {
 
     return courses.stream()
         .map(CourseDto::map)
-        .collect(toList());
+        .toList();
   }
 
   @Transactional
