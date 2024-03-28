@@ -8,6 +8,8 @@ import br.com.school.edtech.shared.exceptions.Validations;
 import br.com.school.edtech.user.application.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 import lombok.Data;
@@ -17,9 +19,11 @@ public class CourseReviewDto {
 
 
   @JsonProperty(access = Access.READ_ONLY)
+  @Schema(accessMode= AccessMode.READ_ONLY)
   private UUID id;
 
   @JsonProperty(access = Access.READ_ONLY)
+  @Schema(accessMode= AccessMode.READ_ONLY)
   private UserDto user;
 
   @JsonProperty(access = Access.WRITE_ONLY)
@@ -27,6 +31,7 @@ public class CourseReviewDto {
   private UUID idUser;
 
   @JsonProperty(access = Access.READ_ONLY)
+  @Schema(accessMode= AccessMode.READ_ONLY)
   private CourseDto course;
 
   @JsonProperty(access = Access.WRITE_ONLY)

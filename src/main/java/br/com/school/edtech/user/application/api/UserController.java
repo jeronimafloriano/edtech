@@ -44,7 +44,7 @@ public class UserController {
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User created")})
   @PostMapping()
   public UserDto register(
-      @Parameter(description = "User information") @RequestBody
+      @Parameter(description = "User information") @RequestBody @Valid
           UserDto userDto) {
     return userService.register(userDto);
   }

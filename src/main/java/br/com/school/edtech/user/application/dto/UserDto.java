@@ -6,6 +6,8 @@ import br.com.school.edtech.user.domain.model.Role;
 import br.com.school.edtech.user.domain.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.UUID;
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class UserDto {
 
   @JsonProperty(access = Access.READ_ONLY)
-  @NotNull
+  @Schema(accessMode= AccessMode.READ_ONLY)
   private UUID id;
 
   @NotNull
@@ -33,7 +35,6 @@ public class UserDto {
   private String email;
 
   @JsonProperty(access = Access.WRITE_ONLY)
-
   @Size(max = 20, message = "The password must have a maximum of 20 characters.")
   @NotNull
   private String password;

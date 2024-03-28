@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ public class EnrollmentController {
   @PostMapping()
   public EnrollmentDto register(
       @Parameter(description = "Enrollment information") @RequestBody
-          EnrollmentDto enrollmentDto) {
+         @Valid EnrollmentDto enrollmentDto) {
     return enrollmentService.register(enrollmentDto);
   }
 }

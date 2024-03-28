@@ -7,6 +7,8 @@ import br.com.school.edtech.shared.exceptions.Validations;
 import br.com.school.edtech.user.application.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.Instant;
@@ -19,18 +21,20 @@ import lombok.NoArgsConstructor;
 @Data
 public class CourseDto {
 
+  public static final String MAX_CHARACTERES = "The course must have a maximum of 10 characters.";
+
   @JsonProperty(access = Access.READ_ONLY)
   private UUID id;
 
   @NotNull
   private String name;
 
-  @Size(max = 10, message = "The course must have a maximum of 10 characters.")
+  @Size(max = 10, message = MAX_CHARACTERES)
   @NotNull
   private String code;
 
   @JsonProperty(access = Access.READ_ONLY)
-  @NotNull
+  @Schema(accessMode= AccessMode.READ_ONLY)
   private UserDto instructor;
 
   @JsonProperty(access = Access.WRITE_ONLY)
@@ -41,12 +45,15 @@ public class CourseDto {
   private String description;
 
   @JsonProperty(access = Access.READ_ONLY)
+  @Schema(accessMode= AccessMode.READ_ONLY)
   private Status status;
 
   @JsonProperty(access = Access.READ_ONLY)
+  @Schema(accessMode= AccessMode.READ_ONLY)
   private Instant creationDate;
 
   @JsonProperty(access = Access.READ_ONLY)
+  @Schema(accessMode= AccessMode.READ_ONLY)
   private Instant inactivationDate;
 
   public CourseDto(String name, String code, UUID idInstructor, String description) {
