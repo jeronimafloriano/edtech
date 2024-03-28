@@ -20,11 +20,12 @@ The application has been documented using swagger and can be accessed at http://
 
 ## Using the application
 Important: The application has been configured for authorization/authentication with spring security. <br>
-Only the POST /users endpoint can be accessed without being authenticated. 
+Only the POST /users endpoint and /user/login can be accessed without being authenticated. 
 
 ### Note 1: Access to endpoints
 
 /users - Post method for user creation: Open <br>
+/users/login - Post method for login: Open <br>
 /enrollment - Post method for enrolling in a course: Any logged-in user
 
 The other endpoints can only be accessed by authenticated users with the ADMIN Role
